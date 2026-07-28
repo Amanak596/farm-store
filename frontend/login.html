@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login - FarmStore</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="brand">🌾 FarmStore</span>
+    <div id="nav-right"></div>
+</nav>
+
+<div class="form-box">
+    <h2>Login</h2>
+    <p id="form-error" class="error-msg"></p>
+    <form id="login-form">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button class="btn" type="submit">Login</button>
+    </form>
+    <p style="margin-top:14px;">No account? <a href="register.html">Register here</a></p>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

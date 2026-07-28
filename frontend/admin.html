@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard - FarmStore</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="brand">🌾 FarmStore</span>
+    <div id="nav-right"></div>
+</nav>
+
+<div class="container">
+    <h1>Admin Dashboard</h1>
+
+    <h2>Add New Product</h2>
+    <div class="form-box" style="margin:0 0 30px 0; max-width:100%;">
+        <p id="product-msg"></p>
+        <form id="add-product-form">
+            <input type="text" name="name" placeholder="Product Name" required>
+            <textarea name="description" placeholder="Description" rows="2"></textarea>
+            <input type="number" name="price" placeholder="Price" step="0.01" required>
+            <input type="number" name="quantity" placeholder="Quantity in stock" required>
+            <input type="text" name="image_url" placeholder="Image URL">
+            <select name="category_id" id="category-select" required></select>
+            <br><br>
+            <button class="btn" type="submit">Add Product</button>
+        </form>
+    </div>
+
+    <h2>All Customer Orders</h2>
+    <div id="orders-box"><p class="muted">Loading...</p></div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script>
+async function checkAdmin() {
+    const me = await apiCall("/api/me");
+    if (!me.logged_in || !me.is_admin) {
+        window.location.href = "index.html";
+        return false;
+    }
+    return true;
+}
+
+async function loadCategoriesIntoSelect() {
+    const categories = await apiCall("/api/categories");
+    document.getElementById("category-select").innerHTML =
+        categories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+}
+
+async function loadAllOrders() {
+    const box = document.getElementById("orders-box");
+    const orders = await apiCall("/api/admin/orders");
+
+    if (orders.length === 0) {
+        box.innerHTML = `<p class="muted">No orders placed yet.</p>`;
+        return;
+    }
+
+    box.innerHTML = orders.map(o => `
+        <div class="order-card">
+            <div style="display:flex; justify-content:space-between;">
+                <h3>Order #${o.id} - ${o.customer_name}</h3>
+                <span class="status-badge">${o.status}</span>
+            </div>
+            <p class="muted">${o.customer_email} • ${new Date(o.created_at).toLocaleString()}</p>
+            <p class="muted">Deliver to: ${o.address || "N/A"}</p>
+            <ul style="margin:10px 0 10px 18px;">
+                ${o.items.map(i => `<li>${i.product_name} x ${i.quantity} - ₹${parseFloat(i.price).toFixed(2)} each</li>`).join("")}
+            </ul>
+            <strong>Total: ₹${parseFloat(o.total_amount).toFixed(2)}</strong>
+        </div>
+    `).join("");
+}
+
+document.getElementById("add-product-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const msg = document.getElementById("product-msg");
+
+    try {
+        await apiCall("/api/admin/products", "POST", {
+            name: form.name.value,
+            description: form.description.value,
+            price: parseFloat(form.price.value),
+            quantity: parseInt(form.quantity.value),
+            image_url: form.image_url.value,
+            category_id: parseInt(form.category_id.value),
+        });
+        msg.className = "success-msg";
+        msg.textContent = "Product added successfully!";
+        form.reset();
+    } catch (err) {
+        msg.className = "error-msg";
+        msg.textContent = err.message;
+    }
+});
+
+(async () => {
+    const isAdmin = await checkAdmin();
+    if (isAdmin) {
+        loadCategoriesIntoSelect();
+        loadAllOrders();
+    }
+})();
+</script>
+</body>
+</html>

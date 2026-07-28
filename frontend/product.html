@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product Details - FarmStore</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="brand">🌾 FarmStore</span>
+    <div id="nav-right"></div>
+</nav>
+
+<div class="container">
+    <div id="product-detail">
+        <p class="muted">Loading...</p>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script>
+const productId = new URLSearchParams(window.location.search).get("id");
+
+async function loadProduct() {
+    const box = document.getElementById("product-detail");
+    try {
+        const p = await apiCall(`/api/products/${productId}`);
+        box.innerHTML = `
+            <div style="display:flex; gap:30px; flex-wrap:wrap; background:white; padding:24px; border-radius:10px;">
+                <img src="${p.image_url}" alt="${p.name}" style="width:320px; height:240px; object-fit:cover; border-radius:8px;">
+                <div style="flex:1; min-width:250px;">
+                    <h1>${p.name}</h1>
+                    <p class="muted" style="margin-bottom:12px;">${p.description || ""}</p>
+                    <div class="price" style="font-size:26px;">₹${parseFloat(p.price).toFixed(2)}</div>
+                    <div class="qty">In stock: ${p.quantity}</div>
+                    <br>
+                    <label>Quantity: </label>
+                    <input type="number" id="qty-input" value="1" min="1" max="${p.quantity}" style="width:70px; padding:6px; margin:0 10px;">
+                    <br><br>
+                    <button class="btn" id="add-cart-btn">Add to Cart</button>
+                    <p id="add-msg" class="success-msg"></p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("add-cart-btn").addEventListener("click", () => {
+            const qty = parseInt(document.getElementById("qty-input").value) || 1;
+            addToCart(p, qty);
+            document.getElementById("add-msg").textContent = "Added to cart!";
+        });
+    } catch (err) {
+        box.innerHTML = `<p class="error-msg">${err.message}</p>`;
+    }
+}
+
+loadProduct();
+</script>
+</body>
+</html>

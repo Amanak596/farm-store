@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Products - FarmStore</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="brand">🌾 FarmStore</span>
+    <div id="nav-right"></div>
+</nav>
+
+<div class="container">
+    <h1 id="page-title">Products</h1>
+    <div class="categories" id="category-list"></div>
+    <div class="product-grid" id="product-grid">
+        <p class="muted">Loading products...</p>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const categoryId = params.get("category_id");
+
+async function loadCategories() {
+    const categories = await apiCall("/api/categories");
+    const list = document.getElementById("category-list");
+
+    list.innerHTML = `<a href="index.html">All</a>` +
+        categories.map(c => `
+            <a href="products.html?category_id=${c.id}" class="${String(c.id) === categoryId ? 'active' : ''}">
+                ${c.name}
+            </a>`).join("");
+
+    const current = categories.find(c => String(c.id) === categoryId);
+    if (current) document.getElementById("page-title").textContent = current.name;
+}
+
+async function loadProducts() {
+    const url = categoryId ? `/api/products?category_id=${categoryId}` : "/api/products";
+    const products = await apiCall(url);
+    const grid = document.getElementById("product-grid");
+
+    if (products.length === 0) {
+        grid.innerHTML = `<p class="muted">No products in this category yet.</p>`;
+        return;
+    }
+
+    grid.innerHTML = products.map(p => `
+        <div class="product-card">
+            <a href="product.html?id=${p.id}">
+                <img src="${p.image_url}" alt="${p.name}">
+            </a>
+            <div class="info">
+                <h3>${p.name}</h3>
+                <div class="qty">In stock: ${p.quantity}</div>
+                <div class="price">₹${parseFloat(p.price).toFixed(2)}</div>
+                <a class="btn" href="product.html?id=${p.id}">View Details</a>
+            </div>
+        </div>
+    `).join("");
+}
+
+loadCategories();
+loadProducts();
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Orders - FarmStore</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="brand">🌾 FarmStore</span>
+    <div id="nav-right"></div>
+</nav>
+
+<div class="container">
+    <h1>My Orders</h1>
+    <div id="orders-box"><p class="muted">Loading...</p></div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script>
+async function loadOrders() {
+    const box = document.getElementById("orders-box");
+    try {
+        const me = await apiCall("/api/me");
+        if (!me.logged_in) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        const orders = await apiCall("/api/orders");
+        if (orders.length === 0) {
+            box.innerHTML = `<p class="muted">You haven't placed any orders yet.</p>`;
+            return;
+        }
+
+        box.innerHTML = orders.map(o => `
+            <div class="order-card">
+                <div style="display:flex; justify-content:space-between;">
+                    <h3>Order #${o.id}</h3>
+                    <span class="status-badge">${o.status}</span>
+                </div>
+                <p class="muted">Placed on ${new Date(o.created_at).toLocaleString()}</p>
+                <ul style="margin:10px 0 10px 18px;">
+                    ${o.items.map(i => `<li>${i.product_name} x ${i.quantity} - ₹${parseFloat(i.price).toFixed(2)} each</li>`).join("")}
+                </ul>
+                <strong>Total: ₹${parseFloat(o.total_amount).toFixed(2)}</strong>
+            </div>
+        `).join("");
+    } catch (err) {
+        box.innerHTML = `<p class="error-msg">${err.message}</p>`;
+    }
+}
+
+loadOrders();
+</script>
+</body>
+</html>
