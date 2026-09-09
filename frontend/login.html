@@ -1,30 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Login - FarmStore</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8">
 
-<nav class="navbar">
-    <span class="brand">🌾 FarmStore</span>
-    <div id="nav-right"></div>
-</nav>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-<div class="form-box">
-    <h2>Login</h2>
-    <p id="form-error" class="error-msg"></p>
-    <form id="login-form">
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button class="btn" type="submit">Login</button>
-    </form>
-    <p style="margin-top:14px;">No account? <a href="register.html">Register here</a></p>
+<title>Login | FarmStore</title> <link rel="stylesheet" href="css/style.css" > </head> <body> <nav class="navbar">
+<a
+    href="index.html"
+    class="brand"
+>
+    🌾 FarmStore
+</a>
+
+<div class="nav-links">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="products.html">
+        Products
+    </a>
+
+    <a href="cart.html">
+        🛒 Cart
+        <span
+            id="cart-count"
+            class="cart-badge"
+        >0</span>
+    </a>
+
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/auth.js"></script>
-</body>
-</html>
+</nav> <main class="auth-page">
+<div class="auth-card">
+
+    <div class="auth-logo">
+        🌾
+    </div>
+
+    <span class="auth-label">
+        WELCOME BACK
+    </span>
+
+    <h1>
+        Sign in to FarmStore
+    </h1>
+
+    <p class="auth-subtitle">
+        Access your account and manage your farm orders.
+    </p>
+
+
+    <div
+        id="error"
+        class="error-msg"
+    ></div>
+
+
+    <form id="login-form">
+
+        <label for="email">
+            Email Address
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+        >
+
+
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+
+        <button
+            type="submit"
+            class="auth-submit"
+            id="login-btn"
+        >
+            Sign In →
+        </button>
+
+    </form>
+
+
+    <div class="auth-divider">
+        <span>New to FarmStore?</span>
+    </div>
+
+
+    <a
+        href="register.html"
+        class="auth-register"
+    >
+        Create an Account
+    </a>
+
+
+    <a
+        href="index.html"
+        class="auth-back"
+    >
+        ← Back to FarmStore
+    </a>
+
+</div>
+
+</main> <script src="js/api.js"></script> <script src="js/cart.js"></script> <script src="js/auth.js"></script> <script> document .getElementById("login-form") .addEventListener( "submit", async function(event) { event.preventDefault(); const error = document.getElementById( "error" ); const button = document.getElementById( "login-btn" ); error.textContent = ""; error.style.display = "none"; const email = document .getElementById("email") .value .trim(); const password = document .getElementById("password") .value; button.disabled = true; button.textContent = "Signing In..."; try { await apiCall( "/api/login", "POST", { email, password } ); window.location.href = "index.html"; } catch (err) { error.textContent = err.message; error.style.display = "block"; button.disabled = false; button.textContent = "Sign In →"; } } ); </script> </body> </html>

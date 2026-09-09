@@ -1,73 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Products - FarmStore</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
-<nav class="navbar">
-    <span class="brand">🌾 FarmStore</span>
-    <div id="nav-right"></div>
-</nav>
-
-<div class="container">
-    <h1 id="page-title">Products</h1>
-    <div class="categories" id="category-list"></div>
-    <div class="product-grid" id="product-grid">
-        <p class="muted">Loading products...</p>
-    </div>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>FarmStore | Products</title> <link rel="stylesheet" href="css/style.css"> </head> <body> <nav class="navbar"> <a href="index.html" class="brand">🌾 FarmStore</a>
+<div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="cart.html">
+        🛒 Cart <span id="cart-count" class="cart-badge">0</span>
+    </a>
+    <span id="nav-right"></span>
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/auth.js"></script>
-<script>
-const params = new URLSearchParams(window.location.search);
-const categoryId = params.get("category_id");
+</nav> <header class="products-header"> <div> <span class="section-label">FARMSTORE MARKETPLACE</span> <h1>Shop Farm Products</h1> <p> Find the equipment, supplies and tools you need for your farm. </p> </div> </header> <main class="container">
+<section class="shop-toolbar">
 
-async function loadCategories() {
-    const categories = await apiCall("/api/categories");
-    const list = document.getElementById("category-list");
+    <div>
+        <strong id="product-count">Products</strong>
+    </div>
 
-    list.innerHTML = `<a href="index.html">All</a>` +
-        categories.map(c => `
-            <a href="products.html?category_id=${c.id}" class="${String(c.id) === categoryId ? 'active' : ''}">
-                ${c.name}
-            </a>`).join("");
+    <div class="shop-controls">
+        <input
+            type="text"
+            id="search-input"
+            placeholder="🔍 Search products..."
+        >
 
-    const current = categories.find(c => String(c.id) === categoryId);
-    if (current) document.getElementById("page-title").textContent = current.name;
-}
+        <select id="category-filter">
+            <option value="">All Categories</option>
+        </select>
+    </div>
 
-async function loadProducts() {
-    const url = categoryId ? `/api/products?category_id=${categoryId}` : "/api/products";
-    const products = await apiCall(url);
-    const grid = document.getElementById("product-grid");
+</section>
 
-    if (products.length === 0) {
-        grid.innerHTML = `<p class="muted">No products in this category yet.</p>`;
-        return;
-    }
+<div class="categories" id="category-list">
+    <p class="muted">Loading categories...</p>
+</div>
 
-    grid.innerHTML = products.map(p => `
-        <div class="product-card">
-            <a href="product.html?id=${p.id}">
-                <img src="${p.image_url}" alt="${p.name}">
-            </a>
-            <div class="info">
-                <h3>${p.name}</h3>
-                <div class="qty">In stock: ${p.quantity}</div>
-                <div class="price">₹${parseFloat(p.price).toFixed(2)}</div>
-                <a class="btn" href="product.html?id=${p.id}">View Details</a>
-            </div>
-        </div>
-    `).join("");
-}
+<div class="product-grid" id="product-grid">
+    <p class="muted">Loading products...</p>
+</div>
 
-loadCategories();
-loadProducts();
-</script>
-</body>
-</html>
+</main> <footer class="footer"> <div> <strong>🌾 FarmStore</strong> <p>Your marketplace for modern agriculture.</p> </div>
+<div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="cart.html">Cart</a>
+</div>
+
+<p class="copyright">© 2026 FarmStore. All rights reserved.</p>
+
+</footer> <script src="js/api.js"></script> <script src="js/cart.js"></script> <script src="js/auth.js"></script> <script> let allProducts = []; let allCategories = []; async function loadData() { try { allCategories = await apiCall("/api/categories"); allProducts = await apiCall("/api/products"); populateCategories(); displayProducts(allProducts); } catch (error) { document.getElementById("product-grid").innerHTML = `<p class="error-msg">${error.message}</p>`; } } function populateCategories() { const select = document.getElementById("category-filter"); const categoryList = document.getElementById("category-list"); select.innerHTML = `<option value="">All Categories</option>` + allCategories.map(c => `<option value="${c.id}">${c.name}</option>` ).join(""); categoryList.innerHTML = `<a href="products.html" class="category-pill active">All</a>` + allCategories.map(c => `<a href="products.html?category_id=${c.id}" class="category-pill" data-category="${c.id}"> ${getCategoryIcon(c.name)} ${c.name} </a>` ).join(""); } function getCategoryIcon(name) { const value = name.toLowerCase(); if (value.includes("fertil")) return "🌱"; if (value.includes("tractor")) return "🚜"; if (value.includes("drone")) return "🚁"; if (value.includes("tool")) return "🛠️"; return "🌾"; } function displayProducts(products) { const grid = document.getElementById("product-grid"); const count = document.getElementById("product-count"); count.textContent = `${products.length} Product${products.length === 1 ? "" : "s"}`; if (products.length === 0) { grid.innerHTML = ` <div class="empty-products"> <div>🌱</div> <h3>No products found</h3> <p>Try another search or category.</p> </div> `; return; } grid.innerHTML = products.map(p => ` <div class="product-card"> <a href="product.html?id=${p.id}" class="product-image"> <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" loading="lazy" > </a> <div class="info"> <span class="product-category"> Farm Essential </span> <h3>${p.name}</h3> <div class="product-bottom"> <div> <div class="price"> ₹${parseFloat(p.price).toFixed(2)} </div> <div class="qty"> ${ p.quantity > 0 ? `✓ ${p.quantity} in stock` : "Out of stock" } </div> </div> <a href="product.html?id=${p.id}" class="quick-view" title="View product"> → </a> </div> </div> </div> `).join(""); } function filterProducts() { const search = document .getElementById("search-input") .value .toLowerCase() .trim(); const category = document.getElementById("category-filter").value; const filtered = allProducts.filter(p => { const matchesSearch = p.name.toLowerCase().includes(search) || (p.description || "").toLowerCase().includes(search); const matchesCategory = !category || String(p.category_id) === String(category); return matchesSearch && matchesCategory; }); displayProducts(filtered); } document .getElementById("search-input") .addEventListener("input", filterProducts); document .getElementById("category-filter") .addEventListener("change", filterProducts); loadData(); </script> </body> </html>

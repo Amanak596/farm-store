@@ -1,62 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Product Details - FarmStore</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8">
 
-<nav class="navbar">
-    <span class="brand">🌾 FarmStore</span>
-    <div id="nav-right"></div>
-</nav>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-<div class="container">
-    <div id="product-detail">
-        <p class="muted">Loading...</p>
-    </div>
+<title>Product Details | FarmStore</title> <link rel="stylesheet" href="css/style.css" > </head> <body> <nav class="navbar">
+<a
+    href="index.html"
+    class="brand"
+>
+    🌾 FarmStore
+</a>
+
+<div class="nav-links">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="products.html">
+        Products
+    </a>
+
+    <a href="cart.html">
+        🛒 Cart
+        <span
+            id="cart-count"
+            class="cart-badge"
+        >0</span>
+    </a>
+
+    <span id="nav-right"></span>
+
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/auth.js"></script>
-<script>
-const productId = new URLSearchParams(window.location.search).get("id");
+</nav> <main class="container product-detail-page">
+<div id="product-detail">
 
-async function loadProduct() {
-    const box = document.getElementById("product-detail");
-    try {
-        const p = await apiCall(`/api/products/${productId}`);
-        box.innerHTML = `
-            <div style="display:flex; gap:30px; flex-wrap:wrap; background:white; padding:24px; border-radius:10px;">
-                <img src="${p.image_url}" alt="${p.name}" style="width:320px; height:240px; object-fit:cover; border-radius:8px;">
-                <div style="flex:1; min-width:250px;">
-                    <h1>${p.name}</h1>
-                    <p class="muted" style="margin-bottom:12px;">${p.description || ""}</p>
-                    <div class="price" style="font-size:26px;">₹${parseFloat(p.price).toFixed(2)}</div>
-                    <div class="qty">In stock: ${p.quantity}</div>
-                    <br>
-                    <label>Quantity: </label>
-                    <input type="number" id="qty-input" value="1" min="1" max="${p.quantity}" style="width:70px; padding:6px; margin:0 10px;">
-                    <br><br>
-                    <button class="btn" id="add-cart-btn">Add to Cart</button>
-                    <p id="add-msg" class="success-msg"></p>
-                </div>
-            </div>
-        `;
+    <div class="product-loading">
+        🌾
+        <p>Loading product...</p>
+    </div>
 
-        document.getElementById("add-cart-btn").addEventListener("click", () => {
-            const qty = parseInt(document.getElementById("qty-input").value) || 1;
-            addToCart(p, qty);
-            document.getElementById("add-msg").textContent = "Added to cart!";
-        });
-    } catch (err) {
-        box.innerHTML = `<p class="error-msg">${err.message}</p>`;
-    }
-}
+</div>
 
-loadProduct();
-</script>
-</body>
-</html>
+</main> <script src="js/api.js"></script> <script src="js/cart.js"></script> <script src="js/auth.js"></script> <script> const productId = new URLSearchParams( window.location.search ).get("id"); async function loadProduct() { const box = document.getElementById( "product-detail" ); if (!productId) { box.innerHTML = ` <div class="product-error"> <h2> Product not found </h2> <p> No product ID was provided. </p> <a href="products.html" class="btn" > Browse Products → </a> </div> `; return; } try { const p = await apiCall( `/api/products/${productId}` ); const inStock = Number(p.quantity) > 0; box.innerHTML = ` <div class="product-detail-card"> <div class="product-detail-image-wrap"> <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" class="product-detail-image" > </div> <div class="product-detail-info"> <span class="section-label"> FARM ESSENTIAL </span> <h1> ${p.name} </h1> <p class="product-description"> ${p.description || "Quality agricultural product for your farm."} </p> <div class="product-detail-price"> ₹${Number(p.price).toFixed(2)} </div> <div class="product-stock ${ inStock ? "stock-available" : "stock-unavailable" }"> ${ inStock ? `✓ ${p.quantity} in stock` : "Out of stock" } </div> ${ inStock ? ` <div class="product-purchase"> <label for="qty-input"> Quantity </label> <input type="number" id="qty-input" value="1" min="1" max="${p.quantity}" > <button class="btn product-add-btn" id="add-cart-btn" > Add to Cart → </button> </div> <p id="add-msg" class="success-msg" ></p> ` : ` <div class="out-of-stock-box"> <strong> Currently unavailable </strong> <span> Please check back later. </span> </div> ` } <a href="products.html" class="back-products" > ← Back to Products </a> </div> </div> `; if (inStock) { document .getElementById( "add-cart-btn" ) .addEventListener( "click", function() { const input = document.getElementById( "qty-input" ); let qty = parseInt( input.value ) || 1; if (qty < 1) { qty = 1; } if ( qty > Number(p.quantity) ) { qty = Number( p.quantity ); input.value = qty; } addToCart( p, qty ); const msg = document.getElementById( "add-msg" ); msg.textContent = "✓ Added to cart!"; } ); } } catch (err) { box.innerHTML = ` <div class="product-error"> <div class="product-error-icon"> ⚠️ </div> <h2> Unable to load product </h2> <p> ${err.message} </p> <a href="products.html" class="btn" > Back to Products </a> </div> `; } } loadProduct(); </script> </body> </html>

@@ -1,64 +1,520 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>FarmStore - Fertilizers, Tractors, Drones & Tools</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>FarmStore | Modern Agriculture Marketplace</title> <link rel="stylesheet" href="css/style.css"> </head> <body> <nav class="navbar">
+<a href="index.html" class="brand">
+    🌾 FarmStore
+</a>
 
-<nav class="navbar">
-    <span class="brand">🌾 FarmStore</span>
-    <div id="nav-right"></div>
-</nav>
+<div class="nav-links">
 
-<div class="container">
-    <h1>Shop by Category</h1>
-    <div class="categories" id="category-list"></div>
+    <a href="index.html">Home</a>
 
-    <h2>All Products</h2>
-    <div class="product-grid" id="product-grid">
-        <p class="muted">Loading products...</p>
-    </div>
+    <a href="products.html">Products</a>
+
+    <a href="cart.html">
+        🛒 Cart
+        <span id="cart-count" class="cart-badge">0</span>
+    </a>
+
+    <span id="nav-right"></span>
+
 </div>
 
+</nav> <!-- HERO --> <section class="home-hero">
+<div class="home-hero-content">
+
+    <span class="hero-tag">
+        🌱 EVERYTHING FARMERS NEED
+    </span>
+
+    <h1>
+        Grow Better.<br>
+        <span>Farm Smarter.</span>
+    </h1>
+
+    <p>
+        Quality fertilizers, modern tractors, agricultural drones
+        and professional farming tools — all in one place.
+    </p>
+
+    <div class="hero-buttons">
+
+        <a href="products.html" class="btn hero-btn">
+            Shop Products →
+        </a>
+
+        <a href="#categories" class="hero-btn-outline">
+            Explore Categories
+        </a>
+
+    </div>
+
+    <div class="hero-trust">
+
+        <div>
+            <strong>100+</strong>
+            <span>Farm Products</span>
+        </div>
+
+        <div>
+            <strong>4</strong>
+            <span>Categories</span>
+        </div>
+
+        <div>
+            <strong>24/7</strong>
+            <span>Easy Shopping</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="home-hero-visual">
+
+    <div class="hero-main-circle">
+        🌾
+    </div>
+
+    <div class="hero-floating-card card-one">
+        <span>🚜</span>
+        <div>
+            <strong>Farm Equipment</strong>
+            <small>Built for modern farming</small>
+        </div>
+    </div>
+
+    <div class="hero-floating-card card-two">
+        <span>🌱</span>
+        <div>
+            <strong>Quality Supplies</strong>
+            <small>Reliable products</small>
+        </div>
+    </div>
+
+</div>
+
+</section> <!-- CATEGORIES --> <section class="home-section" id="categories">
+<div class="section-heading">
+
+    <div>
+
+        <span class="section-label">
+            SHOP BY CATEGORY
+        </span>
+
+        <h2>
+            Everything for your farm
+        </h2>
+
+    </div>
+
+    <a href="products.html">
+        View all products →
+    </a>
+
+</div>
+
+
+<div
+    class="home-categories"
+    id="category-list"
+>
+
+    <p class="muted">
+        Loading categories...
+    </p>
+
+</div>
+
+</section> <!-- FEATURED PRODUCTS --> <section class="home-section featured-section" id="products">
+<div class="section-heading">
+
+    <div>
+
+        <span class="section-label">
+            FARMSTORE COLLECTION
+        </span>
+
+        <h2>
+            Featured products
+        </h2>
+
+        <p>
+            Popular products selected for modern farming.
+        </p>
+
+    </div>
+
+    <a href="products.html">
+        Shop all →
+    </a>
+
+</div>
+
+
+<div
+    class="product-grid"
+    id="product-grid"
+>
+
+    <p class="muted">
+        Loading products...
+    </p>
+
+</div>
+
+</section> <!-- WHY FARMSTORE --> <section class="why-section">
+<div class="why-content">
+
+    <span class="section-label">
+        WHY FARMSTORE
+    </span>
+
+    <h2>
+        Everything your farm needs,<br>
+        without the hassle.
+    </h2>
+
+    <p>
+        From everyday farming tools to modern agricultural
+        equipment, FarmStore brings essential products together
+        in one simple marketplace.
+    </p>
+
+</div>
+
+
+<div class="benefit-grid">
+
+    <div class="benefit-card">
+
+        <div class="benefit-icon">
+            🌱
+        </div>
+
+        <h3>
+            Quality Products
+        </h3>
+
+        <p>
+            Carefully selected products for everyday farming needs.
+        </p>
+
+    </div>
+
+
+    <div class="benefit-card">
+
+        <div class="benefit-icon">
+            🚚
+        </div>
+
+        <h3>
+            Easy Ordering
+        </h3>
+
+        <p>
+            Browse products, add to your cart and order in minutes.
+        </p>
+
+    </div>
+
+
+    <div class="benefit-card">
+
+        <div class="benefit-icon">
+            🔒
+        </div>
+
+        <h3>
+            Secure Shopping
+        </h3>
+
+        <p>
+            Your account and orders are handled securely.
+        </p>
+
+    </div>
+
+</div>
+
+</section> <!-- CTA --> <section class="home-cta">
+<div>
+
+    <span>
+        🌾 READY TO GET STARTED?
+    </span>
+
+    <h2>
+        Make your next harvest smarter.
+    </h2>
+
+    <p>
+        Explore our collection of farming products today.
+    </p>
+
+</div>
+
+<a
+    href="products.html"
+    class="btn cta-button"
+>
+    Start Shopping →
+</a>
+
+</section> <!-- FOOTER --> <footer class="footer">
+<div>
+
+    <strong>
+        🌾 FarmStore
+    </strong>
+
+    <p>
+        Your marketplace for modern agriculture.
+    </p>
+
+</div>
+
+
+<div class="footer-links">
+
+    <a href="index.html">Home</a>
+
+    <a href="products.html">Products</a>
+
+    <a href="cart.html">Cart</a>
+
+    <a href="login.html">Account</a>
+
+</div>
+
+
+<p class="copyright">
+    © 2026 FarmStore. All rights reserved.
+</p>
+
+</footer>
 <script src="js/api.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/auth.js"></script>
+
 <script>
+
+let allLoadedProducts = [];
+
+
 async function loadCategories() {
-    const categories = await apiCall("/api/categories");
-    const list = document.getElementById("category-list");
-    list.innerHTML = `<a href="index.html" class="active">All</a>` +
-        categories.map(c => `<a href="products.html?category_id=${c.id}">${c.name}</a>`).join("");
+
+    const list =
+        document.getElementById("category-list");
+
+    try {
+
+        const categories =
+            await apiCall("/api/categories");
+
+        list.innerHTML =
+            categories.map(c => `
+
+                <a
+                    href="products.html?category_id=${c.id}"
+                    class="home-category-card"
+                >
+
+                    <div class="home-category-icon">
+                        ${getCategoryIcon(c.name)}
+                    </div>
+
+                    <div>
+
+                        <h3>${c.name}</h3>
+
+                        <p>
+                            Explore products →
+                        </p>
+
+                    </div>
+
+                </a>
+
+            `).join("");
+
+    } catch (error) {
+
+        list.innerHTML =
+            `<p class="error-msg">${error.message}</p>`;
+
+    }
+
 }
 
-async function loadProducts() {
-    const products = await apiCall("/api/products");
-    const grid = document.getElementById("product-grid");
 
-    if (products.length === 0) {
-        grid.innerHTML = `<p class="muted">No products found.</p>`;
+function getCategoryIcon(name) {
+
+    const value =
+        name.toLowerCase();
+
+    if (value.includes("fertil"))
+        return "🌱";
+
+    if (value.includes("tractor"))
+        return "🚜";
+
+    if (value.includes("drone"))
+        return "🚁";
+
+    if (value.includes("tool"))
+        return "🛠️";
+
+    return "🌾";
+
+}
+
+
+async function loadProducts() {
+
+    const grid =
+        document.getElementById("product-grid");
+
+    try {
+
+        const products =
+            await apiCall("/api/products");
+
+        allLoadedProducts = products;
+
+
+        if (products.length === 0) {
+
+            grid.innerHTML =
+                `<p class="muted">
+                    No products available.
+                </p>`;
+
+            return;
+        }
+
+
+        grid.innerHTML =
+            products.slice(0, 8).map(p => `
+
+                <div class="product-card">
+
+                    <a
+                        href="product.html?id=${p.id}"
+                        class="product-image"
+                    >
+
+                        <img
+                            src="${p.image_url || 'images/placeholder.jpg'}"
+                            alt="${p.name}"
+                            loading="lazy"
+                        >
+
+                    </a>
+
+
+                    <div class="info">
+
+                        <span class="product-category">
+                            FARM ESSENTIAL
+                        </span>
+
+                        <h3>
+                            ${p.name}
+                        </h3>
+
+                         <div class="product-rating">
+    <span class="stars">★★★★★</span>
+    <span>4.8</span>
+</div>
+
+                        <div class="product-bottom">
+
+                            <div>
+
+                                <div class="price">
+                                    ₹${parseFloat(p.price).toFixed(2)}
+                                </div>
+
+                                <div class="qty">
+
+                                    ${
+                                        p.quantity > 0
+                                        ? `✓ ${p.quantity} in stock`
+                                        : "Out of stock"
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            ${
+                                p.quantity > 0
+                                ? `
+                                    <button
+                                        class="add-cart-small"
+                                        onclick="addProductToCart(${p.id})"
+                                        title="Add to cart"
+                                    >
+                                        🛒
+                                    </button>
+                                `
+                                : `
+                                    <button
+                                        class="add-cart-small disabled"
+                                        disabled
+                                    >
+                                        —
+                                    </button>
+                                `
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    } catch (error) {
+
+        grid.innerHTML =
+            `<p class="error-msg">
+                ${error.message}
+            </p>`;
+
+    }
+
+}
+
+
+function addProductToCart(productId) {
+
+    const product =
+        allLoadedProducts.find(
+            p => p.id === productId
+        );
+
+    if (!product) {
         return;
     }
 
-    grid.innerHTML = products.map(p => `
-        <div class="product-card">
-            <a href="product.html?id=${p.id}">
-                <img src="${p.image_url}" alt="${p.name}">
-            </a>
-            <div class="info">
-                <h3>${p.name}</h3>
-                <div class="qty">In stock: ${p.quantity}</div>
-                <div class="price">₹${parseFloat(p.price).toFixed(2)}</div>
-                <a class="btn" href="product.html?id=${p.id}">View Details</a>
-            </div>
-        </div>
-    `).join("");
+    addToCart(product, 1);
+
+    alert(
+        `${product.name} added to cart!`
+    );
+
 }
+
 
 loadCategories();
 loadProducts();
+
 </script>
+
 </body>
 </html>

@@ -1,60 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>My Orders - FarmStore</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8">
 
-<nav class="navbar">
-    <span class="brand">🌾 FarmStore</span>
-    <div id="nav-right"></div>
-</nav>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-<div class="container">
-    <h1>My Orders</h1>
-    <div id="orders-box"><p class="muted">Loading...</p></div>
+<title>My Orders - FarmStore</title> <link rel="stylesheet" href="css/style.css" > </head> <body> <nav class="navbar">
+<a
+    href="index.html"
+    class="brand"
+>
+    🌾 FarmStore
+</a>
+
+<div class="nav-links">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="products.html">
+        Products
+    </a>
+
+    <a href="cart.html">
+        🛒 Cart
+        <span
+            id="cart-count"
+            class="cart-badge"
+        >0</span>
+    </a>
+
+    <span id="nav-right"></span>
+
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/auth.js"></script>
-<script>
-async function loadOrders() {
-    const box = document.getElementById("orders-box");
-    try {
-        const me = await apiCall("/api/me");
-        if (!me.logged_in) {
-            window.location.href = "login.html";
-            return;
-        }
+</nav> <main class="container orders-page">
+<div class="orders-header">
 
-        const orders = await apiCall("/api/orders");
-        if (orders.length === 0) {
-            box.innerHTML = `<p class="muted">You haven't placed any orders yet.</p>`;
-            return;
-        }
+    <div>
 
-        box.innerHTML = orders.map(o => `
-            <div class="order-card">
-                <div style="display:flex; justify-content:space-between;">
-                    <h3>Order #${o.id}</h3>
-                    <span class="status-badge">${o.status}</span>
-                </div>
-                <p class="muted">Placed on ${new Date(o.created_at).toLocaleString()}</p>
-                <ul style="margin:10px 0 10px 18px;">
-                    ${o.items.map(i => `<li>${i.product_name} x ${i.quantity} - ₹${parseFloat(i.price).toFixed(2)} each</li>`).join("")}
-                </ul>
-                <strong>Total: ₹${parseFloat(o.total_amount).toFixed(2)}</strong>
-            </div>
-        `).join("");
-    } catch (err) {
-        box.innerHTML = `<p class="error-msg">${err.message}</p>`;
-    }
-}
+        <span class="section-label">
+            FARMSTORE
+        </span>
 
-loadOrders();
-</script>
-</body>
-</html>
+        <h1>
+            My Orders
+        </h1>
+
+        <p class="muted">
+            View your previous farm product purchases.
+        </p>
+
+    </div>
+
+    <a
+        href="products.html"
+        class="btn"
+    >
+        Shop Products →
+    </a>
+
+</div>
+
+
+<div id="orders-box">
+
+    <div class="orders-loading">
+        🌾
+        <p>Loading your orders...</p>
+    </div>
+
+</div>
+
+
+<p
+    id="orders-error"
+    class="error-msg"
+></p>
+
+</main> <script src="js/api.js"></script> <script src="js/cart.js"></script> <script src="js/auth.js"></script> <script> function getStatusClass(status) { const value = String(status || "") .toLowerCase(); if ( value.includes("deliver") || value.includes("complete") ) { return "status-success"; } if ( value.includes("cancel") ) { return "status-danger"; } return "status-pending"; } async function loadOrders() { const box = document.getElementById( "orders-box" ); try { const me = await apiCall( "/api/me" ); if (!me.logged_in) { window.location.href = "login.html"; return; } const orders = await apiCall( "/api/orders" ); if ( !orders || orders.length === 0 ) { box.innerHTML = ` <div class="empty-orders"> <div class="empty-orders-icon"> 📦 </div> <h2> No orders yet </h2> <p class="muted"> You haven't placed any orders yet. </p> <a href="products.html" class="btn" > Start Shopping → </a> </div> `; return; } box.innerHTML = orders.map( order => ` <article class="order-card" > <div class="order-top" > <div> <span class="order-label" > ORDER </span> <h3> #${order.id} </h3> </div> <span class=" status-badge ${getStatusClass(order.status)} " > ${order.status} </span> </div> <div class="order-date" > Placed on ${new Date( order.created_at ).toLocaleString()} </div> <div class="order-items" > ${order.items.map( item => ` <div class="order-item" > <div> <strong> ${item.product_name} </strong> <span> Quantity: ${item.quantity} </span> </div> <div class="order-item-price" > ₹${Number( item.price ).toFixed(2)} </div> </div> ` ).join("")} </div> <div class="order-bottom" > <strong> Order Total </strong> <strong class="order-total" > ₹${Number( order.total_amount ).toFixed(2)} </strong> </div> </article> ` ).join(""); } catch (err) { box.innerHTML = ""; const error = document.getElementById( "orders-error" ); error.textContent = err.message; error.style.display = "block"; } } loadOrders(); </script> </body> </html>
