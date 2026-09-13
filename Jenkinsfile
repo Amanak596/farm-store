@@ -59,7 +59,7 @@ pipeline {
             }
         }
 
-        stage('OpenShift Connection Test') {
+        stage('Deploy to OpenShift') {
             steps {
                 withCredentials([
                     string(
@@ -72,8 +72,13 @@ pipeline {
                           --server="https://api.rm3.7wse.p1.openshiftapps.com:6443" \
                           --token="$OC_TOKEN"
 
-                        oc whoami
-                        oc project
+                        oc project aman-dev-dev
+
+                        oc set image deployment/farm-store \
+                          farm-store=${IMAGE_NAME}:${BUILD_NUMBER}
+
+                        oc rollout status deployment/farm-store
+
                         oc logout
                     '''
                 }
