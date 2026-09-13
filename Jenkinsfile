@@ -31,9 +31,9 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Docker Build') {
             steps {
-                echo 'Farm Store build completed successfully'
+                sh 'docker build -t farm-store:${BUILD_NUMBER} .'
             }
         }
     }
