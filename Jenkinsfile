@@ -57,27 +57,27 @@ pipeline {
                     '''
                 }
             }
-
-           stage('OpenShift Connection Test') {
-    steps {
-        withCredentials([
-            string(
-                credentialsId: 'openshift-token',
-                variable: 'OC_TOKEN'
-            )
-        ]) {
-            sh '''
-                oc login \
-                  --server="https://api.rm3.7wse.p1.openshiftapps.com:6443" \
-                  --token="$OC_TOKEN"
-
-                oc whoami
-                oc project
-                oc logout
-            '''
         }
-    }
-}
+
+        stage('OpenShift Connection Test') {
+            steps {
+                withCredentials([
+                    string(
+                        credentialsId: 'openshift-token',
+                        variable: 'OC_TOKEN'
+                    )
+                ]) {
+                    sh '''
+                        oc login \
+                          --server="https://api.rm3.7wse.p1.openshiftapps.com:6443" \
+                          --token="$OC_TOKEN"
+
+                        oc whoami
+                        oc project
+                        oc logout
+                    '''
+                }
+            }
         }
     }
 }
